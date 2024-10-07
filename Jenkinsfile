@@ -4,18 +4,7 @@ pipeline {
     registryCredential = 'docker-hub-credentials'
     dockerImage = ''
   }
-  agent any
-  stages {
-    stage('Compile') {
-      steps {
-        git 'https://github.com/ramnathraja/feedback.git'
-        script{
-                def mvnHome = tool name: 'MAVEN_HOME', type: 'maven'
-                sh "${mvnHome}/bin/mvn package"
-        }
-      }
-    }
-    stage('Building Docker Image') {
+  stage('Building Docker Image') {
       steps{
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
