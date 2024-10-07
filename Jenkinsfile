@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        registry = "feedback/cicd-k8s"
+        registry = "ramnathraja/feedback"
         registryCredential = 'docker-hub-credentials'
         dockerImage = ''
     }
