@@ -2,14 +2,12 @@ pipeline {
     agent any
 
     environment {
-
-        AWS_DEFAULT_REGION = 'ap-southeast-1'      // Update with your desired region
+        AWS_DEFAULT_REGION = 'ap-southeast-1' // Update with your desired region
         EKS_CLUSTER_NAME = 'your-eks-cluster' // Name of your EKS cluster
         KUBE_CONFIG = credentials('kubeconfig') // Jenkins credential for kubeconfig file
         DOCKER_IMAGE = 'ramnathraja/feedback:latest' // Docker image from Docker Hub
         KUBE_NAMESPACE = 'default' // Namespace in EKS cluster
         DEPLOYMENT_NAME = 'demo-deployment' // Name of the deployment
-
         registry = "ramnathraja/feedback"
         registryCredential = 'docker-hub-credentials'
         dockerImage = ''
@@ -31,7 +29,6 @@ pipeline {
                 }
             }
         }
-
         stage('Push Image To Docker Hub') {
             steps {
                 script {
@@ -42,8 +39,6 @@ pipeline {
                 }
             }
         }
-
-        stages {
         stage('EKS Cluster Operations') {
             steps {
                 withAWS(credentials: 'aws-eks-credentials') {
@@ -52,7 +47,6 @@ pipeline {
                 }
             }
         }
-
         stage('Deploy to Kubernetes') {
             steps {
                 script {
@@ -63,7 +57,6 @@ pipeline {
                     kubectl set image deployment/$DEPLOYMENT_NAME -n $KUBE_NAMESPACE $DEPLOYMENT_NAME=$DOCKER_IMAGE --kubeconfig $KUBE_CONFIG
                     kubectl rollout status deployment/$DEPLOYMENT_NAME -n $KUBE_NAMESPACE --kubeconfig $KUBE_CONFIG
                     '''
-
                 }
             }
         }
@@ -71,7 +64,7 @@ pipeline {
 
     post {
         always {
-            cleanWs()  // Clean up workspace after the build
+            cleanWs() // Clean up workspace after the build
         }
     }
 }
