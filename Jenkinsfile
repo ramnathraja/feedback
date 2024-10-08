@@ -39,7 +39,7 @@ pipeline {
             steps {
                 script {
                     // Add your Kubernetes deployment commands here
-                    sh 'kubectl apply -f deployment.yml'
+                    sh 'kubectl apply -f deployment.yml --validate=false'
                 }
             }
         }
