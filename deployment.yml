@@ -33,12 +33,12 @@ spec:
       nodePort: 30008
   type: LoadBalancer
 ---
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: demo-pdb
 spec:
-  minAvailable: 2
+  minAvailable: 1
   selector:
     matchLabels:
       app: demo-app
