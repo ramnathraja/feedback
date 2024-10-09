@@ -62,9 +62,9 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            cleanWs() // Clean up workspace after the build
-        }
-    }
+    //post {
+        //always {
+            //cleanWs() // Clean up workspace after the build
+        //}
+    //}
 }
