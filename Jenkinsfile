@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
+        KUBECONFIG = '/var/lib/jenkins/kubeconfig'
         AWS_DEFAULT_REGION = 'ap-southeast-1' // Update with your desired region
         EKS_CLUSTER_NAME = 'your-eks-cluster' // Name of your EKS cluster
-        KUBE_CONFIG = credentials('kubeconfig') // Jenkins credential for kubeconfig file
+        //KUBE_CONFIG = credentials('kubeconfig') // Jenkins credential for kubeconfig file
         DOCKER_IMAGE = 'ramnathraja/feedback:latest' // Docker image from Docker Hub
         KUBE_NAMESPACE = 'default' // Namespace in EKS cluster
         DEPLOYMENT_NAME = 'demo-deployment' // Name of the deployment
