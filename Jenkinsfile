@@ -5,7 +5,7 @@ pipeline {
         KUBECONFIG = '/var/lib/jenkins/kubeconfig'
         AWS_DEFAULT_REGION = 'ap-southeast-1' // Update with your desired region
         EKS_CLUSTER_NAME = 'your-eks-cluster' // Name of your EKS cluster
-        //KUBE_CONFIG = credentials('kubeconfig') // Jenkins credential for kubeconfig file
+        // KUBE_CONFIG = credentials('kubeconfig') // Jenkins credential for kubeconfig file
         DOCKER_IMAGE = 'ramnathraja/feedback:latest' // Docker image from Docker Hub
         KUBE_NAMESPACE = 'default' // Namespace in EKS cluster
         DEPLOYMENT_NAME = 'demo-deployment' // Name of the deployment
@@ -26,32 +26,32 @@ pipeline {
         stage('Building Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    dockerImage = docker.build(registry + ":$BUILD_NUMBER")
                 }
             }
         }
         stage('Push Image To Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
                         dockerImage.push("${env.BUILD_NUMBER}")
                         dockerImage.push("latest")
                     }
                 }
             }
         }
-
         stage('Deploy to Kubernetes') {
             steps {
                 script {
                     sh 'kubectl apply -f deployment.yaml'
                 }
             }
+        }
     }
 
-    //post {
-        //always {
-            //cleanWs() // Clean up workspace after the build
-        //}
-    //}
+    post {
+        always {
+            cleanWs() // Clean up workspace after the build
+        }
+    }
 }
