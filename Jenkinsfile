@@ -39,27 +39,6 @@ pipeline {
                 }
             }
         }
-        stage('EKS Cluster Operations') {
-            steps {
-                withAWS(credentials: 'aws-eks-credentials') {
-                    // Execute AWS CLI commands or eksctl commands here
-                    sh 'eksctl create cluster --name my-eks-cluster --region ap-southeast-1 --nodegroup-name my-nodes --nodes 2 --nodes-min 1 --nodes-max 2 --managed'
-                }
-            }
-        }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Add your Kubernetes deployment commands here
-                    // sh 'kubectl apply -f deployment.yml --validate=false'
-                    // Apply the Kubernetes deployment with the new Docker image
-                    sh '''
-                    kubectl set image deployment/$DEPLOYMENT_NAME -n $KUBE_NAMESPACE $DEPLOYMENT_NAME=$DOCKER_IMAGE --kubeconfig $KUBE_CONFIG
-                    kubectl rollout status deployment/$DEPLOYMENT_NAME -n $KUBE_NAMESPACE --kubeconfig $KUBE_CONFIG
-                    '''
-                }
-            }
-        }
     }
 
     //post {
